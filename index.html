@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XNO Airdrop Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0b0e11; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .card { background: #1e2329; border: 1px solid #2b3139; border-radius: 20px; }
+        .tab-content { display: none; }
+        .active { display: block; }
+        .gradient-btn { background: linear-gradient(90deg, #007bff, #00d4ff); }
+    </style>
+</head>
+<body class="p-4 pb-24">
+
+    <div class="card p-4 mb-6 text-center border-blue-500/50 shadow-lg">
+        <p class="text-[10px] text-gray-500 uppercase font-bold">Airdrop Ends In</p>
+        <h2 id="timer" class="text-2xl font-mono font-bold text-blue-400 italic">17d 23h 59m 59s</h2>
+    </div>
+
+    <div class="text-center mb-8">
+        <img src="images.png" class="w-24 h-24 mx-auto rounded-full border-4 border-blue-600 shadow-2xl mb-4">
+        <p class="text-gray-400 text-sm">XNO Balance</p>
+        <h1 class="text-5xl font-black mt-1"><span id="balance">0</span> <span class="text-xl text-blue-500 font-bold italic">XNO</span></h1>
+    </div>
+
+    <div id="Home" class="tab-content active text-center">
+        <div id="claim-area">
+            <button id="claim-btn" onclick="handleClaim()" class="gradient-btn w-full py-5 rounded-2xl font-black text-xl shadow-lg mt-4 transform active:scale-95 transition">
+                CLAIM 10,000 XNO
+            </button>
+        </div>
+        <div id="claim-success" class="hidden p-6 card border-green-600">
+            <i class="fas fa-check-circle text-4xl text-green-500 mb-2"></i>
+            <p class="text-green-500 font-bold italic">10,000 XNO CLAIMED SUCCESSFULLY!</p>
+        </div>
+    </div>
+
+    <div id="Task" class="tab-content">
+        <h3 class="text-xl font-bold mb-4 italic text-blue-400">Missions (+80 XNO Each)</h3>
+        <div id="task-list" class="space-y-4">
+            <div id="t1" class="card p-4 flex justify-between items-center border border-gray-800">
+                <span class="text-sm font-medium">Join Official Telegram</span>
+                <a href="https://t.me/XNO_AIRDROP_OFFICIAL" onclick="completeTask('t1')" target="_blank" class="bg-blue-600 px-5 py-2 rounded-full text-xs font-bold">JOIN</a>
+            </div>
+            <div id="t2" class="card p-4 flex justify-between items-center border border-gray-800">
+                <span class="text-sm font-medium">Join Telegram Channel</span>
+                <a href="https://t.me/+pO1956ctV4JiODg9" onclick="completeTask('t2')" target="_blank" class="bg-blue-600 px-5 py-2 rounded-full text-xs font-bold">JOIN</a>
+            </div>
+            <div id="t3" class="card p-4 flex justify-between items-center border border-gray-800">
+                <span class="text-sm font-medium">Follow on Twitter/X</span>
+                <a href="https://x.com/i/status/2035895387677233355" onclick="completeTask('t3')" target="_blank" class="bg-blue-600 px-5 py-2 rounded-full text-xs font-bold">FOLLOW</a>
+            </div>
+        </div>
+        <div id="no-tasks" class="hidden p-8 card text-center text-gray-500 italic">
+            <i class="fas fa-tasks text-3xl mb-3"></i>
+            <p>No more tasks available. Come back later!</p>
+        </div>
+    </div>
+
+    <div id="Refer" class="tab-content text-center">
+        <h3 class="text-xl font-bold mb-6 italic">Unlimited Referrals</h3>
+        <div class="card p-8 border-dashed border-blue-900 shadow-inner">
+            <p class="text-4xl font-black text-blue-500 tracking-tighter">+30 $XNO</p>
+            <p class="text-xs text-gray-500 mt-2">Earn per successful referral</p>
+            <button class="w-full mt-8 bg-gray-800 py-4 rounded-xl border border-gray-700 font-bold active:bg-gray-700" onclick="alert('Referral Link Copied!')">
+                <i class="fas fa-copy mr-2"></i> COPY REFER LINK
+            </button>
+        </div>
+        <p class="text-[10px] text-blue-600 mt-4 uppercase font-bold tracking-widest">Keep inviting to earn more!</p>
+    </div>
+
+    <div id="Wallet" class="tab-content">
+        <h3 class="text-xl font-bold mb-6 italic">Wallet Withdrawal</h3>
+        <div class="grid grid-cols-3 gap-2 mb-6 opacity-50">
+            <div class="card py-2 text-[10px] text-center">BINANCE</div>
+            <div class="card py-2 text-[10px] text-center">BITGET</div>
+            <div class="card py-2 text-[10px] text-center">TRUST</div>
+        </div>
+        <button onclick="handleWithdraw()" class="w-full py-5 rounded-2xl bg-red-600/10 text-red-500 font-bold border border-red-900/50 hover:bg-red-600/20">
+            WITHDRAW NOW
+        </button>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-[#0b0e11] border-t border-gray-800 flex justify-around py-3 z-40">
+        <button onclick="showTab('Home')" class="flex flex-col items-center text-[10px] font-bold text-gray-400 focus:text-blue-500"><i class="fas fa-home text-lg mb-1"></i>Home</button>
+        <button onclick="showTab('Task')" class="flex flex-col items-center text-[10px] font-bold text-gray-400 focus:text-blue-500"><i class="fas fa-tasks text-lg mb-1"></i>Task</button>
+        <button onclick="showTab('Refer')" class="flex flex-col items-center text-[10px] font-bold text-gray-400 focus:text-blue-500"><i class="fas fa-users text-lg mb-1"></i>Refer</button>
+        <button onclick="showTab('Wallet')" class="flex flex-col items-center text-[10px] font-bold text-gray-400 focus:text-blue-500"><i class="fas fa-wallet text-lg mb-1"></i>Wallet</button>
+    </nav>
+
+    <div id="popup" class="fixed inset-0 bg-black/95 hidden items-center justify-center p-6 z-50">
+        <div class="card p-6 w-full text-center border-yellow-600">
+            <h2 class="text-xl font-bold text-yellow-500 mb-2 italic underline">Network Verification</h2>
+            <p class="text-xs text-gray-400 mb-4 italic leading-relaxed">Verification fee of 0.002 SOLANA is required to unlock withdrawal:</p>
+            <div class="bg-black p-3 rounded text-[10px] text-blue-400 break-all font-mono mb-4 border border-blue-900 select-all">6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3</div>
+            <input type="text" id="txid" placeholder="Paste Transaction ID (TxID)" class="w-full bg-gray-900 border border-gray-700 p-3 rounded-lg mb-4 text-sm outline-none text-white">
+            <button onclick="submitTx()" class="w-full py-3 gradient-btn rounded-xl font-bold uppercase tracking-widest">Submit Payment</button>
+        </div>
+    </div>
+
+    <script>
+        let balance = 0;
+        let tasksRemaining = 3;
+        let timerOver = false;
+
+        // Fixed Countdown (17d 23h 59m)
+        let countdownTime = new Date().getTime() + (17*24*60*60*1000) + (23*60*60*1000) + (59*60*1000);
+        setInterval(function() {
+            let now = new Date().getTime();
+            let distance = countdownTime - now;
+            let d = Math.floor(distance / (1000*60*60*24)), h = Math.floor((distance % (1000*60*60*24)) / (1000*60*60)), m = Math.floor((distance % (1000*60*60)) / (1000*60)), s = Math.floor((distance % (1000*60)) / 1000);
+            document.getElementById("timer").innerHTML = d + "d " + h + "h " + m + "m " + s + "s ";
+            if (distance < 0) { timerOver = true; document.getElementById("timer").innerHTML = "AIRDROP ENDED"; }
+        }, 1000);
+
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function handleClaim() {
+            balance += 10000;
+            document.getElementById('balance').innerText = balance.toLocaleString();
+            document.getElementById('claim-area').classList.add('hidden');
+            document.getElementById('claim-success').classList.remove('hidden');
+        }
+
+        function completeTask(id) {
+            balance += 80;
+            tasksRemaining--;
+            document.getElementById('balance').innerText = balance.toLocaleString();
+            document.getElementById(id).style.display = 'none';
+            if(tasksRemaining === 0) {
+                document.getElementById('task-list').classList.add('hidden');
+                document.getElementById('no-tasks').classList.remove('hidden');
+            }
+        }
+
+        function handleWithdraw() {
+            if(!timerOver) alert("airdrop শেষ হওয়ার পরেই আপনি আপনার মূল্যবান টোকেন উওোলন করতে পারবেন");
+            else document.getElementById('popup').style.display = 'flex';
+        }
+
+        function submitTx() {
+            let val = document.getElementById('txid').value;
+            if(val) alert("Verification in progress! Please wait 24-48 hours.");
+            else alert("Please enter a valid Transaction ID.");
+        }
+    </script>
+</body>
+</html>
