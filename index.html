@@ -10,18 +10,26 @@
         .card { background: #181a20; border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #2b2f36; }
         .gradient-btn { background: linear-gradient(90deg, #3a86ff, #8338ec); border: none; }
         .wallet-card { background: #1e2126; border-radius: 10px; padding: 12px; border-left: 4px solid #3a86ff; margin-bottom: 8px; }
+        .withdraw-btn { background-color: #22c55e; font-weight: 900; }
     </style>
 </head>
 <body class="p-4 max-w-md mx-auto">
 
     <div class="text-center my-6">
-        <img src="https://i.postimg.cc/kR9Z33Zf/image-4.png" alt="Logo" class="w-24 mx-auto rounded-full border-4 border-blue-500 shadow-xl">
+        <img src="https://i.postimg.cc/kR9Z33Zf/image-4.png" alt="ASTR Logo" class="w-24 mx-auto rounded-full border-4 border-blue-500 shadow-xl">
         <h1 class="text-xl font-black mt-2 text-blue-400 italic uppercase">ASTR COIN AIRDROP</h1>
     </div>
 
     <div class="card text-center">
+        <p class="text-gray-400 text-xs uppercase mb-2">Airdrop Ending In:</p>
+        <div id="timer" class="text-xl font-mono font-bold text-white tracking-widest border border-blue-500 p-2 rounded-lg bg-blue-500/10">
+            16d : 23h : 56m : 56s
+        </div>
+    </div>
+
+    <div class="card text-center">
         <p class="text-gray-400 text-sm">Your ASTR Balance</p>
-        <h2 id="balanceDisplay" class="text-4xl font-black mt-1">0.00 ASTR</h2>
+        <h2 id="balanceDisplay" class="text-4xl font-black mt-1 text-white">0.00 ASTR</h2>
         <button id="claimBtn" onclick="claimWelcome()" class="gradient-btn w-full py-3 mt-4 rounded-xl font-black text-lg shadow-lg">CLAIM 8,000 ASTR</button>
     </div>
 
@@ -30,82 +38,100 @@
         
         <div class="wallet-card flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" class="w-6">
+                <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" class="w-6" alt="Binance">
                 <span class="text-sm font-bold">Binance Wallet</span>
             </div>
-            <button onclick="connectWallet('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+            <button onclick="connectWallet('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold shadow-md">Connect</button>
         </div>
 
-        <div class="wallet-card flex justify-between items-center" style="border-left-color: #00f0ff;">
+        <div class="wallet-card flex justify-between items-center" style="border-left-color: #01f0ff;">
             <div class="flex items-center gap-3">
-                <img src="https:// can-img.bitgetimg.com/multi-lang/1701338634835.png" class="w-6 rounded-full" onerror="this.src='https://cryptologos.cc/logos/solana-sol-logo.png'">
+                <img src="https://cryptologos.cc/logos/solana-sol-logo.png" class="w-6 rounded-full" alt="Bitget">
                 <span class="text-sm font-bold">Bitget Wallet</span>
             </div>
-            <button onclick="connectWallet('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+            <button onclick="connectWallet('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold shadow-md">Connect</button>
         </div>
     </div>
 
     <div class="card">
         <h3 class="font-bold text-sm mb-2 text-blue-400">Your Referral Link</h3>
         <div class="flex gap-2 bg-black p-2 rounded-lg border border-gray-700">
-            <input id="refInput" type="text" readonly value="https://t.me/ASTR_Airdrop_Bot?start=user123" class="w-full bg-transparent text-[10px] text-blue-300 outline-none">
-            <button onclick="copyReferral()" class="text-blue-500 font-bold text-xs uppercase px-2">COPY</button>
+            <input id="refLink" type="text" readonly value="https://t.me/ASTR_Airdrop_Bot?start=user123" class="w-full bg-transparent text-[11px] text-blue-300 outline-none">
+            <button onclick="copyRef()" class="text-blue-500 font-bold text-xs uppercase px-2 hover:text-white">COPY</button>
         </div>
         <p class="text-[10px] text-gray-500 mt-2 italic text-center">Invite friends and get 18 ASTR per referral</p>
     </div>
 
-    <button onclick="handleWithdraw()" class="w-full py-4 rounded-2xl bg-green-600 font-black text-xl shadow-2xl mb-10 tracking-widest uppercase">Withdraw</button>
+    <button onclick="handleWithdraw()" class="withdraw-btn w-full py-4 rounded-2xl text-xl shadow-2xl mb-10 tracking-widest uppercase">Withdraw</button>
 
     <script>
+        // Data Load
         let balance = parseFloat(localStorage.getItem('astr_bal')) || 0;
         let claimed = localStorage.getItem('astr_clm') === 'true';
 
-        window.onload = () => { refreshUI(); };
+        window.onload = () => { refreshUI(); startTimer(); };
 
         function refreshUI() {
             document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
             if (claimed) {
-                let btn = document.getElementById('claimBtn');
+                const btn = document.getElementById('claimBtn');
                 btn.innerText = "ALREADY CLAIMED";
                 btn.disabled = true;
                 btn.style.opacity = "0.5";
             }
         }
 
-        // কপি করার ফাংশন (Fixed)
-        function copyReferral() {
-            const copyText = document.getElementById("refInput");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); // মোবাইল ডিভাইসের জন্য
-
-            try {
-                navigator.clipboard.writeText(copyText.value);
-                alert("Referral link copied to clipboard!");
-            } catch (err) {
-                // বিকল্প পদ্ধতি যদি ব্রাউজার সাপোর্ট না করে
-                document.execCommand("copy");
-                alert("Referral link copied!");
-            }
-        }
-
+        // ক্লেইম ৮০০০ টোকেন
         function claimWelcome() {
             if(!claimed) {
                 balance += 8000;
                 localStorage.setItem('astr_bal', balance);
                 localStorage.setItem('astr_clm', 'true');
                 refreshUI();
+                alert("Successfully claimed 8,000 ASTR!");
+            }
+        }
+
+        // রেফারেল লিংক কপি করার ফাংশন
+        function copyRef() {
+            const copyText = document.getElementById("refLink");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // মোবাইলের জন্য
+
+            try {
+                navigator.clipboard.writeText(copyText.value).then(() => {
+                    alert("Referral link copied!");
+                });
+            } catch (err) {
+                document.execCommand("copy");
+                alert("Referral link copied!");
             }
         }
 
         function connectWallet(name) {
-            let addr = prompt(`Connect your ${name} SOL Address:`);
+            let addr = prompt("Enter your " + name + " SOL Address:");
             if(addr && addr.length > 20) {
-                alert(`${name} Wallet Connected!`);
+                alert(name + " Wallet Connected!");
             }
         }
 
         function handleWithdraw() {
-            alert("Withdrawal will be available after the countdown ends.");
+            alert("Withdrawal is currently locked. Please wait for the countdown.");
+        }
+
+        // ১৬ দিনের টাইমার
+        function startTimer() {
+            let target = new Date().getTime() + (16*24*60*60*1000);
+            setInterval(() => {
+                let now = new Date().getTime();
+                let diff = target - now;
+                if(diff <= 0) return;
+                let d = Math.floor(diff / (1000*60*60*24));
+                let h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+                let m = Math.floor((diff % (1000*60*60)) / (1000*60));
+                let s = Math.floor((diff % (1000*60)) / 1000);
+                document.getElementById('timer').innerText = `${d}d : ${h}h : ${m}m : ${s < 10 ? '0'+s : s}s`;
+            }, 1000);
         }
     </script>
 </body>
