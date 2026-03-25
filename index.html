@@ -11,7 +11,7 @@
         .gradient-btn { background: linear-gradient(90deg, #3a86ff, #8338ec); border: none; }
         .wallet-card { background: #1e2126; border-radius: 10px; padding: 12px; border-left: 4px solid #3a86ff; margin-bottom: 8px; }
         .task-done { opacity: 0.5; pointer-events: none; border: 1px solid gray !important; color: gray !important; }
-        .input-box { background: #000; border: 1px solid #3a86ff; border-radius: 8px; padding: 8px; width: 100%; color: #3a86ff; font-size: 10px; outline: none; display: none; margin-top: 10px; }
+        .fixed-input { background: rgba(0,0,0,0.5); border: 1px solid #3a86ff; border-radius: 6px; padding: 6px 10px; width: 100%; color: #3a86ff; font-size: 11px; outline: none; margin-top: 8px; }
     </style>
 </head>
 <body class="p-4 max-w-md mx-auto">
@@ -40,17 +40,17 @@
         <div class="wallet-card">
             <div class="flex justify-between items-center">
                 <span class="text-sm font-bold">Binance Wallet</span>
-                <button id="binanceBtn" onclick="showInput('binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+                <button onclick="saveW('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
             </div>
-            <input id="binanceInput" type="text" placeholder="Enter SOL Address..." class="input-box">
+            <input type="text" id="binanceAddr" placeholder="Paste your Binance SOL Address here..." class="fixed-input">
         </div>
 
         <div class="wallet-card" style="border-left-color: #00f0ff;">
             <div class="flex justify-between items-center">
                 <span class="text-sm font-bold">Bitget Wallet</span>
-                <button id="bitgetBtn" onclick="showInput('bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+                <button onclick="saveW('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
             </div>
-            <input id="bitgetInput" type="text" placeholder="Enter SOL Address..." class="input-box">
+            <input type="text" id="bitgetAddr" placeholder="Paste your Bitget SOL Address here..." class="fixed-input">
         </div>
     </div>
 
@@ -89,28 +89,23 @@
             if(localStorage.getItem('t1_done')) lockTask(1);
             if(localStorage.getItem('t2_done')) lockTask(2);
             if(localStorage.getItem('t3_done')) lockTask(3);
+            
+            document.getElementById('binanceAddr').value = localStorage.getItem('binance_addr') || "";
+            document.getElementById('bitgetAddr').value = localStorage.getItem('bitget_addr') || "";
         };
 
         function updateUI() {
             document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
         }
 
-        // ইনপুট বক্স দেখানোর ফাংশন
-        function showInput(type) {
-            let input = document.getElementById(type + 'Input');
-            let btn = document.getElementById(type + 'Btn');
-            
-            if (input.style.display === "block") {
-                if(input.value.length > 20) {
-                    alert("Wallet Linked!");
-                    btn.innerText = "LINKED";
-                    input.style.display = "none";
-                } else {
-                    alert("Please enter a valid address!");
-                }
+        function saveW(name) {
+            let id = name === 'Binance' ? 'binanceAddr' : 'bitgetAddr';
+            let addr = document.getElementById(id).value;
+            if(addr.length > 20) {
+                localStorage.setItem(name.toLowerCase() + '_addr', addr);
+                alert(name + " Address Saved!");
             } else {
-                input.style.display = "block";
-                btn.innerText = "SUBMIT";
+                alert("Enter a valid address!");
             }
         }
 
@@ -141,8 +136,9 @@
             alert("Referral Link Copied!");
         }
 
+        // আপনার চাওয়া নতুন ইংরেজি মেসেজ
         function handleWithdraw() {
-            alert("ASTR COIN AIRDROP\n\nWithdrawal Locked Until Airdrop Ends\n\nFee: 0.0026 SOL to 6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3");
+            alert("Dear User,\n\nYou can only withdraw your valuable tokens after the airdrop ends, not before that. Thank you.");
         }
 
         function startTimer() {
