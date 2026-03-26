@@ -105,19 +105,47 @@
     function updateUI() {
         document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
     }
+<script>
+    let balance = parseFloat(localStorage.getItem('astr_balance')) || 8460;
+
+    window.onload = () => {
+        updateUI();
+        // পেজ লোড হওয়ার সময় চেক করবে আগে সেভ করা আছে কি না
+        checkAndLock('binanceAddr', 'binance_addr');
+        checkAndLock('bitgetAddr', 'bitget_addr');
+    };
+
+    function checkAndLock(inputId, storageKey) {
+        let savedAddr = localStorage.getItem(storageKey);
+        if (savedAddr) {
+            let el = document.getElementById(inputId);
+            el.value = savedAddr;
+            el.readOnly = true; // আর টাইপ করা যাবে না
+            el.style.opacity = "0.6"; // একটু ঘোলা দেখাবে
+            el.style.cursor = "not-allowed";
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
+    }
 
     function saveW(name) {
         let id = name === 'Binance' ? 'binanceAddr' : 'bitgetAddr';
-        let addr = document.getElementById(id).value;
+        let inputEl = document.getElementById(id);
+        let addr = inputEl.value;
         
-        if (addr.length > 15) { // অ্যাড্রেস ঠিক আছে কি না চেক করছে
-            // ব্রাউজারে পার্মানেন্ট সেভ করছে
+        if (addr.length > 15) {
             localStorage.setItem(name.toLowerCase() + '_addr', addr);
-            alert(name + " Address Saved Permanently!");
+            inputEl.readOnly = true; 
+            inputEl.style.opacity = "0.6";
+            inputEl.style.cursor = "not-allowed";
+            alert(name + " Address Saved & Locked!");
         } else {
             alert("Please enter a valid ASTR address!");
         }
     }
+</script>
 
         function doTask(id, url) {
             window.open(url, '_blank');
