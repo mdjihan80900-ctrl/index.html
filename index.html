@@ -39,20 +39,25 @@
 
     <div class="card">
         <h3 class="font-bold text-sm text-yellow-500 mb-3 uppercase italic">Wallet Options</h3>
-        
         <div class="wallet-card">
-            <div class="flex justify-between items-center">
-                <span class="text-sm font-bold">Binance Wallet</span>
-                <button onclick="saveW('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
-            </div>
-            <input type="text" id="binanceAddr" placeholder="Paste your Binance ASTR Address here..." class="fixed-input">
+    <div class="flex justify-between items-center mb-2">
+        <div class="flex items-center gap-2">
+            <img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png" width="20" height="20">
+            <span class="text-sm font-bold">Binance Wallet (ASTR)</span>
         </div>
-
+        <button onclick="saveW('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs">Save</button>
+    </div>
+    <input type="text" id="binanceAddr" placeholder="Paste your Binance ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
         <div class="wallet-card" style="border-left-color: #00f0ff;">
-            <div class="flex justify-between items-center">
-                <span class="text-sm font-bold">Bitget Wallet</span>
-                <button onclick="saveW('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
-            </div>
+    <div class="flex justify-between items-center mb-2">
+        <div class="flex items-center gap-2">
+            <img src="https://vectorlogo4u.com/wp-content/uploads/2024/09/bitget-logo-vector.png" width="20" height="20">
+            <span class="text-sm font-bold">Bitget Wallet (ASTR)</span>
+        </div>
+        <button onclick="saveW('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs">Save</button>
+    </div>
+    <input type="text" id="bitgetAddr" placeholder="Paste your Bitget ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
+        </div>
             <input type="text" id="bitgetAddr" placeholder="Paste your Bitget ASTR Address here..." class="fixed-input">
         </div>
     </div>
