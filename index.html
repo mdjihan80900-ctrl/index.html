@@ -23,8 +23,7 @@
 
     <div class="card text-center">
         <p class="text-gray-400 text-xs uppercase mb-2">Airdrop Ending In:</p>
-        <div id="timerDisplay" class="text-xl font-mono font-bold text-white tracking-widest border border-blue-500 p-2 rounded-lg bg-blue-500/10">
-            15d : 23h : 59m : 24s
+        <div id="timerDisplay" style="font-size: 40px; font-weight: bold; color: #f3ba2f; margin: 10px 0; text-align: center;">24:00:00</div>
         </div>
     </div>
 
@@ -156,3 +155,31 @@
     </script>
 </body>
 </html>
+// টাইমার লজিক - এটা শুধু টাইমার চালাবে, বাকি কিছুতে হাত দেবে না
+function startMyAirdropTimer() {
+    let timeLeft = 24 * 60 * 60; // ২৪ ঘণ্টা
+    const display = document.getElementById('timer');
+
+    if (!display) return; // যদি টাইমার আইডি না পায় তবে কাজ করবে না
+
+    const countdown = setInterval(() => {
+        let h = Math.floor(timeLeft / 3600);
+        let m = Math.floor((timeLeft % 3600) / 60);
+        let s = timeLeft % 60;
+
+        // ফরম্যাট: 24:00:00
+        display.innerText = 
+            (h < 10 ? "0" + h : h) + ":" + 
+            (m < 10 ? "0" + m : m) + ":" + 
+            (s < 10 ? "0" + s : s);
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            display.innerText = "00:00:00";
+        }
+        timeLeft--;
+    }, 1000);
+}
+
+// পেজ লোড হলে টাইমার শুরু হবে
+window.addEventListener('load', startMyAirdropTimer);
