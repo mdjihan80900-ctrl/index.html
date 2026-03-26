@@ -41,31 +41,27 @@
         <h3 class="font-bold text-sm text-yellow-500 mb-3 uppercase italic">Wallet Options</h3>
         <div class="wallet-card">
     <div class="wallet-card">
-    <div class="flex justify-between items-center mb-2">
-        <div class="flex items-center gap-2">
-            <img src="https://i.postimg.cc/mD8p9C2m/sGXgVSjJ.png" width="22" height="22" style="border-radius: 50%;">
-            <span class="text-sm font-bold">Binance Wallet (ASTR)</span>
+        <div class="flex justify-between items-center mb-2">
+            <div class="flex items-center gap-2">
+                <img src="https://i.postimg.cc/mD8p9C2m/sGXgVSjJ.png" width="22" height="22" style="border-radius: 50%;">
+                <span class="text-sm font-bold">Binance Wallet (ASTR)</span>
+            </div>
+            <button onclick="saveW('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
         </div>
-        <button onclick="saveW('Binance')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
+        <input type="text" id="binanceAddr" placeholder="Paste your Binance ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
     </div>
-    <input type="text" id="binanceAddr" placeholder="Paste your Binance ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
-    </div>
-    </div>
-    <input type="text" id="binanceAddr" placeholder="Paste your Binance ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
-    </div>
-    <input type="text" id="binanceAddr" placeholder="Paste your Binance ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
-        <div class="wallet-card" style="border-left-color: #00f0ff;">
-    <div class="flex justify-between items-center mb-2">
-        <div class="flex items-center gap-2">
-            <img src="https://i.postimg.cc/q7SjFmKk/kVvJKwDM.png" width="22" height="22" style="border-radius: 50%;">
-            <span class="text-sm font-bold">Bitget Wallet (ASTR)</span>
-        </div>
-        <button onclick="saveW('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
-    </div>
-    <input type="text" id="bitgetAddr" placeholder="Paste your Bitget ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
-        </div>
 
-    <div class="card">
+    <div class="wallet-card" style="border-left-color: #00f0ff; margin-top: 12px;">
+        <div class="flex justify-between items-center mb-2">
+            <div class="flex items-center gap-2">
+                <img src="https://i.postimg.cc/q7SjFmKk/kVvJKwDM.png" width="22" height="22" style="border-radius: 50%;">
+                <span class="text-sm font-bold">Bitget Wallet (ASTR)</span>
+            </div>
+            <button onclick="saveW('Bitget')" class="bg-blue-600 px-4 py-1 rounded-lg text-xs font-bold">Save</button>
+        </div>
+        <input type="text" id="bitgetAddr" placeholder="Paste your Bitget ASTR Address here..." class="w-full bg-black/20 border border-gray-700 rounded p-2 text-xs outline-none">
+    </div>
+        </div>
         <h3 class="font-bold text-sm mb-4 uppercase text-blue-400">Tasks (20 ASTR Each)</h3>
         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-800">
             <span class="text-xs">Join Telegram Official</span>
