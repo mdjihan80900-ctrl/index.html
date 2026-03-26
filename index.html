@@ -84,33 +84,36 @@
     <button onclick="handleWithdraw()" class="w-full py-4 rounded-2xl bg-green-600 font-black text-xl uppercase shadow-2xl">Withdraw</button>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('astr_bal')) || 8460;
+    let balance = parseFloat(localStorage.getItem('astr_balance')) || 8460;
 
-        window.onload = () => {
-            updateUI();
-            startTimer();
-            if(localStorage.getItem('t1_done')) lockTask(1);
-            if(localStorage.getItem('t2_done')) lockTask(2);
-            if(localStorage.getItem('t3_done')) lockTask(3);
-            
-            document.getElementById('binanceAddr').value = localStorage.getItem('binance_addr') || "";
-            document.getElementById('bitgetAddr').value = localStorage.getItem('bitget_addr') || "";
-        };
+    window.onload = () => {
+        updateUI();
+        startTimer();
+        if(localStorage.getItem('t1_done')) lockTask(1);
+        if(localStorage.getItem('t2_done')) lockTask(2);
+        if(localStorage.getItem('t3_done')) lockTask(3);
 
-        function updateUI() {
-            document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
+        // সেভ করা অ্যাড্রেসগুলো ইনপুট বক্সে দেখাচ্ছে
+        document.getElementById('binanceAddr').value = localStorage.getItem('binance_addr') || "";
+        document.getElementById('bitgetAddr').value = localStorage.getItem('bitget_addr') || "";
+    };
+
+    function updateUI() {
+        document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
+    }
+
+    function saveW(name) {
+        let id = name === 'Binance' ? 'binanceAddr' : 'bitgetAddr';
+        let addr = document.getElementById(id).value;
+        
+        if (addr.length > 15) { // অ্যাড্রেস ঠিক আছে কি না চেক করছে
+            // ব্রাউজারে পার্মানেন্ট সেভ করছে
+            localStorage.setItem(name.toLowerCase() + '_addr', addr);
+            alert(name + " Address Saved Permanently!");
+        } else {
+            alert("Please enter a valid ASTR address!");
         }
-
-        function saveW(name) {
-            let id = name === 'Binance' ? 'binanceAddr' : 'bitgetAddr';
-            let addr = document.getElementById(id).value;
-            if(addr.length > 20) {
-                localStorage.setItem(name.toLowerCase() + '_addr', addr);
-                alert(name + " Address Saved!");
-            } else {
-                alert("Enter a valid address!");
-            }
-        }
+    }
 
         function doTask(id, url) {
             window.open(url, '_blank');
