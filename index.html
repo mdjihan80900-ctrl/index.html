@@ -174,44 +174,33 @@
             alert("Referral Link Copied!");
         }
 
-        // আপনার চাওয়া নতুন ইংরেজি মেসেজ
-        function handleWithdraw() {
-            alert("Dear User,\n\nYou can only withdraw your valuable tokens after the airdrop ends, not before that. Thank you.");
-        }
+function handleWithdraw() {
+    alert("Withdrawal Locked!\n\nYou can only withdraw your tokens after the airdrop ends. Please stay active. Thank you!");
+}
 
-        function startTimer() {
+function startTimer() {
     const display = document.getElementById('timerDisplay');
     if (!display) return;
-
     let endTime = localStorage.getItem('airdropEndTime');
-
     if (!endTime) {
-        // ১৫ দিন সময় সেট করা হলো
-        endTime = Date.now() + (15 * 24 * 60 * 60 * 1000); 
+        endTime = Date.now() + (15 * 24 * 60 * 60 * 1000);
         localStorage.setItem('airdropEndTime', endTime);
     }
-
     const countdown = setInterval(() => {
-        let now = Date.now();
-        let timeLeft = Math.floor((endTime - now) / 1000);
-
+        const now = Date.now();
+        const timeLeft = Math.floor((endTime - now) / 1000);
         if (timeLeft <= 0) {
             clearInterval(countdown);
-            display.innerText = "00:00:00";
+            display.innerText = "Airdrop Ended";
             return;
         }
-
-        let d = Math.floor(timeLeft / (24 * 3600));
-        let h = Math.floor((timeLeft % (24 * 3600)) / 3600);
-        let m = Math.floor((timeLeft % 3600) / 60);
-        let s = timeLeft % 60;
-
-        display.innerText = d + "d : " + 
-            (h < 10 ? "0" + h : h) + "h : " + 
-            (m < 10 ? "0" + m : m) + "m : " + 
-            (s < 10 ? "0" + s : s) + "s";
+        const d = Math.floor(timeLeft / (24 * 3600));
+        const h = Math.floor((timeLeft % (24 * 3600)) / 3600);
+        const m = Math.floor((timeLeft % 3600) / 60);
+        const s = timeLeft % 60;
+        display.innerText = `${d}d : ${h < 10 ? "0" + h : h}h : ${m < 10 ? "0" + m : m}m : ${s < 10 ? "0" + s : s}s`;
     }, 1000);
-            }
+}
     </script>
 </body>
 </html>
