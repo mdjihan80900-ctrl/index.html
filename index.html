@@ -105,26 +105,7 @@
     function updateUI() {
         document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
     }
-<script>
-    let balance = parseFloat(localStorage.getItem('astr_balance')) || 8460;
 
-    window.onload = () => {
-        updateUI();
-        // পেজ লোড হওয়ার সময় চেক করবে আগে সেভ করা আছে কি না
-        checkAndLock('binanceAddr', 'binance_addr');
-        checkAndLock('bitgetAddr', 'bitget_addr');
-    };
-
-    function checkAndLock(inputId, storageKey) {
-        let savedAddr = localStorage.getItem(storageKey);
-        if (savedAddr) {
-            let el = document.getElementById(inputId);
-            el.value = savedAddr;
-            el.readOnly = true; // আর টাইপ করা যাবে না
-            el.style.opacity = "0.6"; // একটু ঘোলা দেখাবে
-            el.style.cursor = "not-allowed";
-        }
-    }
 
     function updateUI() {
         document.getElementById('balanceDisplay').innerText = balance.toLocaleString() + " ASTR";
@@ -145,7 +126,7 @@
             alert("Please enter a valid ASTR address!");
         }
     }
-</script>
+    
 
         function doTask(id, url) {
             window.open(url, '_blank');
